@@ -17,6 +17,7 @@ import jsonb
 from tools import merge
 
 # Python modules
+from copy import copy
 import platform
 import sys
 from typing import Any
@@ -70,16 +71,45 @@ class Conf(object):
 				'Config-OC unable to load config.%s.json\n' % platform.node()
 			)
 
+	def __call__(self):
+		"""Call
+
+		Python magic method that allows the instance to be called
+
+		Returns:
+			The current data of the instance
+		"""
+
+		return copy(self.__data)
+
 	def __getattr__(self, __name: str) -> Any:
 		"""Get Attribute
 
-		Python magic method to handle any data request
+		Python magic method to handle any data request as an attribute
 
 		Arguments:
 			__name (str): The name of the attribute to access
 
 		Returns:
-			_Data
+			data.Data
+		"""
+
+		# If we have the name in the top level of the data
+		try:
+			return data.Data(self.__data[__name])
+		except KeyError:
+			return data.Data(data.NOTHING)
+
+	def __getitem__(self, __name: str) -> Any:
+		"""Get Item
+
+		Python magic method to handle any data requests as a key
+
+		Arguments:
+			__name (str): The name of the key to access
+
+		Returns:
+			data.Data
 		"""
 
 		# If we have the name in the top level of the data

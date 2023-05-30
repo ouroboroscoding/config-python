@@ -81,3 +81,27 @@ class Data(object):
 		# If the key doesn't exist, or the type isn't a dict
 		except (KeyError, TypeError):
 			return Data(NOTHING)
+
+	def __getitem__(self, __name: str) -> Any:
+		"""Get Item
+
+		Python magic method to handle any data requests as a key
+
+		Arguments:
+			__name (str): The name of the key to access
+
+		Returns:
+			Data
+		"""
+
+		# If we have no data, just return ourselves, it makes no difference
+		if self.__data is NOTHING:
+			return self
+
+		# If we have the key
+		try:
+			return Data(self.__data[__name])
+
+		# If the key doesn't exist, or the type isn't a dict
+		except (KeyError, TypeError):
+			return Data(NOTHING)

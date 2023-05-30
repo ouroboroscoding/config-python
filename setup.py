@@ -23,7 +23,7 @@ setup(
 	python_requires='>=3.10',
 	install_requires=[
 		'jsonb>=1.0.0,<1.1',
-		'tools>=1.0.0,<1.1'
+		'Tools-OC>=1.0.0,<1.1'
 	],
 	zip_safe=True
 )
