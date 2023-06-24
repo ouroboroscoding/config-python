@@ -48,7 +48,9 @@ class Conf(object):
 
 		# If we already exist, fuck shit up
 		if self._exists:
-			raise RuntimeError('config.Conf can not be instantiated twice')
+			raise RuntimeError(
+				'Config-OC.config.Conf can not be instantiated twice'
+			)
 		self._exists = True
 
 		# Init the data
@@ -58,7 +60,7 @@ class Conf(object):
 		try:
 			self.__data = jsonb.load('config.json')
 		except FileNotFoundError:
-			sys.stderr.write('Config-OC unable to load config.json\n')
+			sys.stderr.write('Config-OC.config unable to load config.json\n')
 
 		# Load the hostname file on top of the base file
 		try:
