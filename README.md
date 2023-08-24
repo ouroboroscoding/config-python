@@ -280,5 +280,3 @@ Max files: 10
 ```
 
 So why did this code work? There's no "logging" in our configuration files, and we didn't add it at runtime, shouldn't this throw a exception? Maybe an AttributeError? Sure, it could have been designed that way, but then you'd always be stuck in a place where you need to decide whether you want to make something configurable or not. Maybe you just want the option, in the future, but again, you're not advertising it to the world. Maybe it's a beta feature, but should you personally have to commit, push, update, test, commit, push, updated, test, again and again to adjust something?
-
-As always, we at Ouroboros Coding are looking to make your life easier, not harder. We aren't here to put you in a box, but to free you from the one we're all stuck on for too much of our day.
