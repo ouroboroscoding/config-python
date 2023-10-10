@@ -12,6 +12,9 @@ __created__		= "2023-05-26"
 # Limit exports
 __all__ = [ 'Data' ]
 
+# Ouroboros modules
+from tools import merge
+
 # Python modules
 from copy import copy
 from typing import Any
@@ -56,6 +59,10 @@ class Data(object):
 		if self.__data is NOTHING:
 			return _default
 		else:
+			if _default is not None and isinstance(_default, dict):
+				dRet = copy(_default)
+				merge(dRet, self.__data)
+				return dRet
 			return copy(self.__data)
 
 	def __getattr__(self, __name: str) -> Any:
