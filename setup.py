@@ -4,8 +4,8 @@ with open('README.md', 'r') as oF:
 	long_description=oF.read()
 
 setup(
-	name='Config-OC',
-	version='1.0.1',
+	name='config-oc',
+	version='1.0.2',
 	description='Handles loading loading configuration files based on hostname',
 	long_description=long_description,
 	long_description_content_type='text/markdown',
@@ -23,7 +23,7 @@ setup(
 	python_requires='>=3.10',
 	install_requires=[
 		'jsonb>=1.0.0,<1.1',
-		'Tools-OC>=1.2.1,<1.3'
+		'tools-oc>=1.2.2,<1.3'
 	],
 	zip_safe=True
 )
