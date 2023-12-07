@@ -63,7 +63,8 @@ class Data(object):
 				dRet = copy(_default)
 				merge(dRet, self.__data)
 				return dRet
-			return copy(self.__data)
+			else:
+				return copy(self.__data)
 
 	def __getattr__(self, __name: str) -> Any:
 		"""Get Attribute

@@ -5,7 +5,7 @@ with open('README.md', 'r') as oF:
 
 setup(
 	name='config-oc',
-	version='1.0.2',
+	version='1.0.3',
 	description='Handles loading loading configuration files based on hostname',
 	long_description=long_description,
 	long_description_content_type='text/markdown',
