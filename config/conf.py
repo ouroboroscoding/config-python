@@ -49,29 +49,12 @@ class Conf(object):
 		# If we already exist, fuck shit up
 		if self._exists:
 			raise RuntimeError(
-				'Config-OC.config.Conf can not be instantiated twice'
+				'config-oc.config.Conf can not be instantiated twice'
 			)
 		self._exists = True
 
-		# Init the data
-		self.__data = {}
-
-		# Load the primary file
-		try:
-			self.__data = jsonb.load('config.json')
-		except FileNotFoundError:
-			sys.stderr.write('Config-OC.config unable to load config.json\n')
-
-		# Load the hostname file on top of the base file
-		try:
-			merge(
-				self.__data,
-				jsonb.load('config.%s.json' % platform.node())
-			)
-		except FileNotFoundError:
-			sys.stderr.write(
-				'Config-OC unable to load config.%s.json\n' % platform.node()
-			)
+		# Load the config
+		self._load()
 
 	def __call__(self):
 		"""Call
@@ -119,3 +102,32 @@ class Conf(object):
 			return data.Data(self.__data[__name])
 		except KeyError:
 			return data.Data(data.NOTHING)
+
+	def _load(self):
+		"""Load (private)
+
+		Loads the data from the files into memory
+
+		Returns:
+			None
+		"""
+
+		# Init the data
+		self.__data = {}
+
+		# Load the primary file
+		try:
+			self.__data = jsonb.load('config.json')
+		except FileNotFoundError:
+			sys.stderr.write('config-oc.config unable to load config.json\n')
+
+		# Load the hostname file on top of the base file
+		try:
+			merge(
+				self.__data,
+				jsonb.load('config.%s.json' % platform.node())
+			)
+		except FileNotFoundError:
+			sys.stderr.write(
+				'config-oc unable to load config.%s.json\n' % platform.node()
+			)
