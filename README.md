@@ -280,3 +280,24 @@ Max files: 10
 ```
 
 So why did this code work? There's no "logging" in our configuration files, and we didn't add it at runtime, shouldn't this throw a exception? Maybe an AttributeError? Sure, it could have been designed that way, but then you'd always be stuck in a place where you need to decide whether you want to make something configurable or not. Maybe you just want the option, in the future, but again, you're not advertising it to the world. Maybe it's a beta feature, but should you personally have to commit, push, update, test, commit, push, updated, test, again and again to adjust something?
+
+## Reloading
+
+If it's necessary to update the config without restarting your application, you can simply use the `reload()` method. This will re-open both config files and change what is currently in memory.
+
+```python
+>>> import config
+config-oc.config unable to load config.json
+config-oc unable to load config.hostname.json
+>>> config()
+{}
+>>> import strings
+>>> strings.to_file('config.json', '{"test": "hello"}')
+True
+>>> config.reload()
+config-oc unable to load config.hostname.json
+>>> config()
+{'test': 'hello'}
+```
+
+Keep in mind that if you have a Data pointer currently in use anywhere in your code you will have to re-fetch it from config else you will be holding onto something that very well doesn't exist in memory anymore.
