@@ -22,14 +22,9 @@ from .data import Data
 # The one instance we export
 config = Conf()
 
-# Reload the data
-def reload():
-	config._load()
-
 # Allow use of import config instead of from config import config
 if sys.modules[__name__] is config:
 	pass
 else:
 	sys.modules[__name__] = config
 	sys.modules[__name__].config = config
-	sys.modules[__name__].reload = reload
