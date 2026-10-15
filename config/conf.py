@@ -15,6 +15,7 @@ __all__ = [ 'Conf' ]
 # Ouroboros modules
 import jsonb
 from tools import merge
+import undefined
 
 # Python modules
 from copy import copy
@@ -53,6 +54,9 @@ class Conf(object):
 			)
 		self._exists = True
 
+		# Init the list of reload callbacks
+		self._callbacks = [ ]
+
 		# Load the config
 		self._load()
 
@@ -83,7 +87,7 @@ class Conf(object):
 		try:
 			return data.Data(self.__data[__name])
 		except KeyError:
-			return data.Data(data.NOTHING)
+			return data.Data(undefined)
 
 	def __getitem__(self, __name: str) -> Any:
 		"""Get Item
@@ -101,7 +105,7 @@ class Conf(object):
 		try:
 			return data.Data(self.__data[__name])
 		except KeyError:
-			return data.Data(data.NOTHING)
+			return data.Data(undefined)
 
 	def _load(self):
 		"""Load (private)
@@ -113,7 +117,7 @@ class Conf(object):
 		"""
 
 		# Init the data
-		self.__data = {}
+		self.__data = { }
 
 		# Load the primary file
 		try:
@@ -131,3 +135,29 @@ class Conf(object):
 			sys.stderr.write(
 				'config-oc unable to load config.%s.json\n' % platform.node()
 			)
+
+	def reload(self):
+		"""Reload
+
+		Called to reload the config files from memory
+		"""
+
+		# Call the load method again
+		self._load()
+
+		# Call each reload callback
+		for f in self._callbacks:
+			f()
+
+	def on_reload(self, callback: callable):
+		"""On Reload
+
+		Attachs a functhon/method to be called if the config is reloaded
+
+		Arguments:
+			callback (Callable): The function to call on reload
+		"""
+
+		# If the function does not already exist
+		if callback not in self._callbacks:
+			self._callbacks.append(callback)
