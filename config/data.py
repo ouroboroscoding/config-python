@@ -13,14 +13,12 @@ __created__		= "2023-05-26"
 __all__ = [ 'Data' ]
 
 # Ouroboros modules
-from tools import merge
+from tools import combine
+import undefined
 
 # Python modules
-from copy import copy
+from copy import deepcopy
 from typing import Any
-
-NOTHING = []
-"""Used to identify a lack of a value when even None could be valid"""
 
 class Data(object):
 	"""Data
@@ -56,15 +54,13 @@ class Data(object):
 		"""
 
 		# If we have nothing
-		if self.__data is NOTHING:
+		if self.__data is undefined:
 			return _default
 		else:
-			if _default is not None and isinstance(_default, dict):
-				dRet = copy(_default)
-				merge(dRet, self.__data)
-				return dRet
+			if isinstance(_default, dict) and isinstance(self.__data, dict):
+				return combine(_default, self.__data)
 			else:
-				return copy(self.__data)
+				return deepcopy(self.__data)
 
 	def __getattr__(self, __name: str) -> Any:
 		"""Get Attribute
@@ -79,7 +75,7 @@ class Data(object):
 		"""
 
 		# If we have no data, just return ourselves, it makes no difference
-		if self.__data is NOTHING:
+		if self.__data is undefined:
 			return self
 
 		# If we have the key
@@ -88,7 +84,7 @@ class Data(object):
 
 		# If the key doesn't exist, or the type isn't a dict
 		except (KeyError, TypeError):
-			return Data(NOTHING)
+			return Data(undefined)
 
 	def __getitem__(self, __name: str) -> Any:
 		"""Get Item
@@ -103,7 +99,7 @@ class Data(object):
 		"""
 
 		# If we have no data, just return ourselves, it makes no difference
-		if self.__data is NOTHING:
+		if self.__data is undefined:
 			return self
 
 		# If we have the key
@@ -112,4 +108,4 @@ class Data(object):
 
 		# If the key doesn't exist, or the type isn't a dict
 		except (KeyError, TypeError):
-			return Data(NOTHING)
+			return Data(undefined)
